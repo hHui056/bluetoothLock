@@ -131,7 +131,7 @@ public class Instruction implements Serializable {
         // 1 byte
         protected byte len;
         // n bytes
-        protected Body body;
+        protected Body body = null;
 
         public Builder() {
         }
