@@ -1,5 +1,6 @@
-package com.hh.bluetoothlock.instruction.body
+package com.hh.bluetoothlock.instruction.body.response
 
+import com.hh.bluetoothlock.instruction.body.Body
 import com.hh.bluetoothlock.instruction.enum.LockStatus
 import com.hh.bluetoothlock.util.TransformUtils
 import java.util.*

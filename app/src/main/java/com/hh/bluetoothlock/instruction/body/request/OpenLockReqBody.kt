@@ -1,8 +1,8 @@
-package com.hh.bluetoothlock.instruction.body
+package com.hh.bluetoothlock.instruction.body.request
 
+import com.hh.bluetoothlock.instruction.body.Body
 import com.hh.bluetoothlock.util.TransformUtils
 import java.util.*
-
 
 /**
  * Create By hHui on 2018/11/14

@@ -1,4 +1,6 @@
-package com.hh.bluetoothlock.instruction.body
+package com.hh.bluetoothlock.instruction.body.request
+
+import com.hh.bluetoothlock.instruction.body.Body
 
 /**
  * Create By hHui on 2018/11/13

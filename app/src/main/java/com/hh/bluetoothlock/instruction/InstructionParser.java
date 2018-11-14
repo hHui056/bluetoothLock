@@ -1,7 +1,12 @@
 package com.hh.bluetoothlock.instruction;
 
 import com.hh.bluetoothlock.instruction.body.Body;
-import com.hh.bluetoothlock.instruction.body.GetKeyResBody;
+import com.hh.bluetoothlock.instruction.body.response.ClearUnUpLoadDataResBody;
+import com.hh.bluetoothlock.instruction.body.response.CloseLockResBody;
+import com.hh.bluetoothlock.instruction.body.response.GetKeyResBody;
+import com.hh.bluetoothlock.instruction.body.response.GetUnUpLoadDataResBody;
+import com.hh.bluetoothlock.instruction.body.response.OpenLockResBody;
+import com.hh.bluetoothlock.instruction.body.response.QueryLockInfoResBody;
 import com.hh.bluetoothlock.instruction.exception.ParserException;
 
 import java.util.Arrays;
@@ -92,14 +97,29 @@ public class InstructionParser {
                 body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.OPEN_LOCK: //开锁回复
+                body = new OpenLockResBody();
+                body.parseContent(data);
+                body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.CLOSE_LOCK://关锁回复
+                body = new CloseLockResBody();
+                body.parseContent(data);
+                body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.QUERY_LOCK_STATUS://查询锁状态回复
+                body=new QueryLockInfoResBody();
+                body.parseContent(data);
+                body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.GET_UNUPLOAD_DATA://获取未上传的数据
+                body = new GetUnUpLoadDataResBody();
+                body.parseContent(data);
+                body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.CLEAR_UNUPLOAD_DATA://清除未上传的数据
+                body = new ClearUnUpLoadDataResBody();
+                body.parseContent(data);
+                body.setIsAvailable(true);
                 break;
         }
         return body != null && body.isAvailable();
