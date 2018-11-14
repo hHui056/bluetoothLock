@@ -21,7 +21,7 @@ public class Instruction implements Serializable {
     //  CRC                 2               CRC16校验和（需要加密过后才计算，不包括在原始数据中）
     // ===========================================================================================================
     // 1 byte
-    protected byte stx = (byte) 0xFF;
+    protected byte stx = (byte) 0xFE;
     // 1 byte
     protected byte num;
     // 1 byte
@@ -91,8 +91,8 @@ public class Instruction implements Serializable {
             temporaryByte[j] = encrpData[j];
         }
         int crcInt = CRC16.calcCRC(temporaryByte);//CRC校验和
-        encrpData[i++] = (byte) (crcInt & 0xff);
         encrpData[i++] = (byte) ((crcInt >> 8) & 0xff);
+        encrpData[i++] = (byte) (crcInt & 0xff);
         return encrpData;
     }
 
@@ -121,7 +121,7 @@ public class Instruction implements Serializable {
      */
     public static class Builder {
         // 1 byte
-        private static final byte stx = (byte) 0xFF;
+        private static final byte stx = (byte) 0xFE;
         // 1 byte
         protected byte num = 0;
         // 1 byte

@@ -9,7 +9,7 @@ import com.hh.bluetoothlock.instruction.body.Body
  *
  * @param key 设备识别Key 默认为 "yOTmK50z"
  */
-class GetKeyReqBody(private val key: String) : Body() {
+class GetKeyReqBody(private val key: String = "yOTmK50z") : Body() {
 
     override fun toByteArray(): ByteArray {
         return key.toByteArray()

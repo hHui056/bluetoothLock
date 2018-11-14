@@ -21,6 +21,9 @@ public class InstructionParser {
 
     private byte[] realContent; //解密过后的数据
 
+    public InstructionParser() {
+    }
+
     /**
      * 解析指令
      **/
@@ -31,7 +34,7 @@ public class InstructionParser {
 
         Instruction instruction = new Instruction();
         // verify stx
-        if (realContent[0] != 0xFE) throw new ParserException("stx is wrong");
+        if (realContent[0] != (byte) 0xFE) throw new ParserException("stx is wrong");
 
         instruction.num = realContent[1];
         instruction.key = realContent[2];
@@ -40,10 +43,10 @@ public class InstructionParser {
         //verify len
         instruction.len = realContent[4];
 
-        //verify data
-        byte data[] = Arrays.copyOfRange(realContent, 5, realContent.length - 2);
-        if (!parseData(data, instruction)) throw new ParserException("data field is invalid");
-
+        //verify data 解析data时将整段指令放入（包括stx、cmd等信息），方便对位取数据
+        //   byte data[] = Arrays.copyOfRange(realContent, 5, realContent.length - 2);
+        if (!parseData(realContent, instruction))
+            throw new ParserException("data field is invalid");
         return instruction;
     }
 
@@ -62,10 +65,16 @@ public class InstructionParser {
      * @return
      */
     private boolean verifyCrc(byte[] content) {
-        int crc = (content[content.length - 2] << 8) ^ content[content.length - 1];
+        byte[] crcBytes = Arrays.copyOfRange(content, content.length - 2, content.length);
         byte[] data = Arrays.copyOfRange(content, 0, content.length - 2);
         int calcCrc = CRC16.calcCRC(data);
-        return crc == calcCrc;
+        byte a = (byte) ((calcCrc >> 8) & 0xff);
+        byte b = (byte) (calcCrc & 0xff);
+        if (crcBytes[0] == a && crcBytes[1] == b) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -73,18 +82,16 @@ public class InstructionParser {
      * 解密数据  加密数据--->明文
      */
     private void decodeData(byte[] content) {
-        int i = 0;
         byte[] data = new byte[content.length];
         byte num = (byte) (content[1] - 0x32);
         int len = content[4] ^ (content[1] - 0x32);
-        data[i++] = (byte) 0xFE;
-        data[i++] = (byte) (content[1] - 0x32);
-        while (i < len + 4) {
-            data[i++] = (byte) (content[i] ^ num);
-            i++;
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) (content[1] - 0x32);
+        for (int i = 2; i <= len + 4; i++) {
+            data[i] = (byte) (content[i] ^ num);
         }
-        data[i++] = content[i++];
-        data[i++] = content[i++];
+        data[content.length - 2] = content[content.length - 2];
+        data[content.length - 1] = content[content.length - 1];
         this.realContent = data;
     }
 
@@ -94,31 +101,37 @@ public class InstructionParser {
             case Instruction.Cmd.GET_KEY: //获取秘钥回复
                 body = new GetKeyResBody();
                 body.parseContent(data);
+                instruction.body = body;
                 body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.OPEN_LOCK: //开锁回复
                 body = new OpenLockResBody();
                 body.parseContent(data);
+                instruction.body = body;
                 body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.CLOSE_LOCK://关锁回复
                 body = new CloseLockResBody();
                 body.parseContent(data);
+                instruction.body = body;
                 body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.QUERY_LOCK_STATUS://查询锁状态回复
-                body=new QueryLockInfoResBody();
+                body = new QueryLockInfoResBody();
                 body.parseContent(data);
+                instruction.body = body;
                 body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.GET_UNUPLOAD_DATA://获取未上传的数据
                 body = new GetUnUpLoadDataResBody();
                 body.parseContent(data);
+                instruction.body = body;
                 body.setIsAvailable(true);
                 break;
             case Instruction.Cmd.CLEAR_UNUPLOAD_DATA://清除未上传的数据
                 body = new ClearUnUpLoadDataResBody();
                 body.parseContent(data);
+                instruction.body = body;
                 body.setIsAvailable(true);
                 break;
         }

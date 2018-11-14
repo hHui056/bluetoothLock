@@ -16,7 +16,7 @@ import java.util.*
 class OpenLockReqBody(private val clientId: Int, private val date: Date, private val openType: Int) : Body() {
 
     override fun toByteArray(): ByteArray {
-        val timestamp = date.time.toInt()
+        val timestamp = date.time.toInt() / 1000
         val clientBytes = TransformUtils.toByteArray(clientId, 4)
         val timeBytes = TransformUtils.toByteArray(timestamp, 4)
         val openTypeByte = openType as Byte
