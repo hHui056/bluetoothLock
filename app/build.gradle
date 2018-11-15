@@ -29,6 +29,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compile 'com.inuker.bluetooth:library:1.4.0'
+    compile 'com.github.f0ris.sweetalert:library:1.5.1'
 }
 repositories {
     mavenCentral()
