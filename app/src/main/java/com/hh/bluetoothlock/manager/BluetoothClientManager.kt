@@ -45,7 +45,7 @@ class BluetoothClientManager {
      */
     private fun searchBluetooth() {
         val request = SearchRequest.Builder()
-                //.searchBluetoothLeDevice(3000, 3)   // 先扫BLE设备3次，每次3s
+                //.searchBluetoothLeDevice(3000, 3)   // 先扫BLE设备3次，每次3s TODO 此处暂时屏蔽BLE扫描 方便测试
                 .searchBluetoothClassicDevice(5000) // 再扫经典蓝牙5s
                 .searchBluetoothLeDevice(2000)      // 再扫BLE设备2s
                 .build()

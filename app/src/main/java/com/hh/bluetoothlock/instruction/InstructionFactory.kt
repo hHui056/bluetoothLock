@@ -10,7 +10,7 @@ import java.util.*
  * 指令工厂 用于产生对应操作的指令
  */
 object InstructionFactory {
-    var communicationKey = 0x00 as Byte //通信秘钥  //TODO 获取到通信秘钥过后需要更新
+    var communicationKey = 0x00 as Byte //通信秘钥
     /** 获取通信秘钥指令**/
     val getKeyInstruction = Instruction.Builder().setBody(GetKeyReqBody()).setCmd(Instruction.Cmd.GET_KEY).createInstruction()
     /** 开锁指令 **/
