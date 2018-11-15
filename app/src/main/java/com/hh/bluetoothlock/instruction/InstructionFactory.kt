@@ -16,7 +16,7 @@ object InstructionFactory {
     /** 开锁指令 **/
     val openLockInstruction = Instruction.Builder().setCmd(Instruction.Cmd.OPEN_LOCK).setKey(communicationKey)
             .setBody(OpenLockReqBody(1, Date(), 0)).createInstruction()
-
+//TEst
     /** 开锁回复 **/
     val openLockReplyInstruction = Instruction.Builder().setCmd(Instruction.Cmd.OPEN_LOCK).setKey(communicationKey).createInstruction()
     /** 关锁回复 **/
