@@ -165,4 +165,8 @@ class BluetoothClientManager {
             })
         }
     }
+
+    fun closeBlueTooth() {
+        bluetoothClient.closeBluetooth()
+    }
 }

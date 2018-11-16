@@ -9,4 +9,5 @@ import com.inuker.bluetooth.library.search.SearchResult
 interface MainView : BaseView {
     fun getContext(): Context
     fun refreshDeviceList(list: ArrayList<SearchResult>)
+    fun jump2Control(deviceMac: String)
 }

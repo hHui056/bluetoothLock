@@ -7,7 +7,6 @@ import com.hh.bluetoothlock.ui.BaseActivity;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-
 public class MyAlertDialog {
     private Context mContext;
     private SweetAlertDialog alertDialog;

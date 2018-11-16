@@ -14,7 +14,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
  *Create By hHui on 2018/11/16
  */
 class ControlPresenter(private val view: ControlView) {
-
     @SuppressLint("CheckResult")
     fun start() {
         view.initDeviceName("当前设备:${view.getDeviceMac()}")

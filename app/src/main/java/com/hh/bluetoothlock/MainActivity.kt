@@ -1,11 +1,14 @@
 package com.hh.bluetoothlock
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.AdapterView
 import com.hh.bluetoothlock.presenter.MainPresenter
 import com.hh.bluetoothlock.ui.BaseActivity
+import com.hh.bluetoothlock.ui.ControlActivity
 import com.hh.bluetoothlock.ui.adapter.SearchResultListAdapter
+import com.hh.bluetoothlock.util.Constans
 import com.hh.bluetoothlock.view.MainView
 import com.inuker.bluetooth.library.search.SearchResult
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,9 +39,20 @@ class MainActivity : BaseActivity(), MainView {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.stop()
+    }
+
     override fun refreshDeviceList(list: ArrayList<SearchResult>) {
         adapter.list = list
         adapter.notifyDataSetChanged()
+    }
+
+    override fun jump2Control(deviceMac: String) {
+        val intent = Intent(this@MainActivity, ControlActivity::class.java)
+        intent.putExtra(Constans.Key.DEVICE_MAC_KEY, deviceMac)
+        startActivity(intent)
     }
 
     override fun getContext(): Context = applicationContext

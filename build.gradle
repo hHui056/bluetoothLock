@@ -1,14 +1,31 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.71'
+    ext {
+        kotlin_version = '1.2.71'
+        greenDaoVersion = "3.2.2"
+        rxJavaVersion = "2.1.2"
+        rxAndroidVersion = "2.0.1"
+        sweetalertVersion = "1.5.1"
+        blueToothVersion = "1.4.0"
+
+        libDependencies = [
+                greenDao  : "org.greenrobot:greendao:${greenDaoVersion}",
+                rxJava    : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+                rxAndroid : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+                sweetAlert: "com.github.f0ris.sweetalert:library:${sweetalertVersion}",
+                blueTooth : "com.inuker.bluetooth:library:${blueToothVersion}",
+                kotlin    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+        ]
+    }
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0-alpha02'
+        classpath "org.greenrobot:greendao-gradle-plugin:${greenDaoVersion}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -20,7 +37,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 

@@ -47,6 +47,7 @@ class MainPresenter(val view: MainView) {
                 if (isSuccess) {//连接成功--->发送获取通信秘钥的指令
                     view.closeProgress()
                     view.showToast("连接成功")
+                    view.jump2Control(device.address)
                     BluetoothClientManager.instance.openBluetoothNotification(device)
                     BluetoothClientManager.instance.sendInstructionByCharacteristic(device, InstructionFactory.getKeyInstruction)
                 }
@@ -76,5 +77,9 @@ class MainPresenter(val view: MainView) {
         val device = deviceList[position]
         BluetoothClientManager.instance.connectDevices(device)
         view.showProgress("设备连接中")
+    }
+
+    fun stop() {
+        BluetoothClientManager.instance.closeBlueTooth()
     }
 }

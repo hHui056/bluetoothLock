@@ -11,14 +11,14 @@ import java.util.Random;
 
 public class Instruction implements Serializable {
     // ===========================================================================================================
-    //  filed             length               description
-    //  STX                 1               固定头部，0xFE
-    //  NUM                 1               随机数，数据发送方产生，用于加密数据
-    //  KEY                 1               通信秘钥， 由车锁随机产生， APP 通过（ 0x11）命令获得
-    //  CMD                 1               命令字
-    //  LEN                 1               数据长度 ---> DATA的长度
-    //  DATA                n               数据
-    //  CRC                 2               CRC16校验和（需要加密过后才计算，不包括在原始数据中）
+    //  filed             length               description                                                       |
+    //  STX                 1               固定头部，0xFE                                                         |
+    //  NUM                 1               随机数，数据发送方产生，用于加密数据                                        |
+    //  KEY                 1               通信秘钥， 由车锁随机产生， APP 通过（ 0x11）命令获得                        |
+    //  CMD                 1               命令字                                                                 |
+    //  LEN                 1               数据长度 ---> DATA的长度                                                |
+    //  DATA                n               数据                                                                  |
+    //  CRC                 2               CRC16校验和（需要加密过后才计算，不包括在原始数据中）                         |
     // ===========================================================================================================
     // 1 byte
     protected byte stx = (byte) 0xFE;
@@ -174,8 +174,6 @@ public class Instruction implements Serializable {
 
         /**
          * 生成随机数
-         *
-         * @return
          */
         private void generateRandomNum() {
             Random random = new Random();
