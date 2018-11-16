@@ -5,12 +5,9 @@
 
     <TextView
         android:id="@+id/txt_mac"
+        style="@style/txt_nomal_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="123456789"
-        android:textColor="@android:color/black"
-        android:textSize="18dp" />
+        android:text="123456789" />
 </RelativeLayout>

@@ -5,6 +5,7 @@ import com.hh.bluetoothlock.instruction.InstructionFactory
 import com.hh.bluetoothlock.instruction.body.response.GetKeyResBody
 import com.hh.bluetoothlock.manager.BluetoothClientManager
 import com.hh.bluetoothlock.manager.BluetoothListener
+import com.hh.bluetoothlock.util.RxBus
 import com.hh.bluetoothlock.view.MainView
 import com.inuker.bluetooth.library.search.SearchResult
 
@@ -56,6 +57,9 @@ class MainPresenter(val view: MainView) {
                     is GetKeyResBody -> {//获取秘钥成功--->更新通信秘钥
                         val getKeyResBody = instruction.body as GetKeyResBody
                         InstructionFactory.communicationKey = getKeyResBody.key
+                    }
+                    else -> {
+                        RxBus.default.post(InstructionEvent(instruction))
                     }
                 }
             }

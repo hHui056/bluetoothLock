@@ -4,10 +4,10 @@ import android.content.Context
 import com.hh.bluetoothlock.instruction.Instruction
 import com.hh.bluetoothlock.instruction.InstructionParser
 import com.hh.bluetoothlock.instruction.exception.ParserException
-import com.hh.bluetoothlock.util.DescriptorUUID
-import com.hh.bluetoothlock.util.characterNotifyUUID
-import com.hh.bluetoothlock.util.characterWriteUUID
-import com.hh.bluetoothlock.util.serviceUUID
+import com.hh.bluetoothlock.util.Constans.DescriptorUUID
+import com.hh.bluetoothlock.util.Constans.characterNotifyUUID
+import com.hh.bluetoothlock.util.Constans.characterWriteUUID
+import com.hh.bluetoothlock.util.Constans.serviceUUID
 import com.inuker.bluetooth.library.BluetoothClient
 import com.inuker.bluetooth.library.Code.REQUEST_SUCCESS
 import com.inuker.bluetooth.library.connect.listener.BluetoothStateListener
@@ -120,11 +120,27 @@ class BluetoothClientManager {
         }
     }
 
+    fun sendInstructionByCharacteristic(deviceMac: String, instruction: Instruction) {
+        bluetoothClient.write(deviceMac, ServiceUUID, characterUUID_Write, instruction.toEnciphermentByteArray()) { code ->
+            if (code == REQUEST_SUCCESS) { //命令发送成功
+
+            }
+        }
+    }
+
     /**
      * 发送命令 写Descriptor
      */
     fun sendInstructionByDescriptor(device: SearchResult, instruction: Instruction) {
         bluetoothClient.writeDescriptor(device.address, ServiceUUID, characterUUID_Write, descriptorUUID, instruction.toEnciphermentByteArray()) {
+            if (it == REQUEST_SUCCESS) {//写入成功
+
+            }
+        }
+    }
+
+    fun sendInstructionByDescriptor(deviceMac: String, instruction: Instruction) {
+        bluetoothClient.writeDescriptor(deviceMac, ServiceUUID, characterUUID_Write, descriptorUUID, instruction.toEnciphermentByteArray()) {
             if (it == REQUEST_SUCCESS) {//写入成功
 
             }

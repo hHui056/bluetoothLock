@@ -16,7 +16,6 @@ class QueryLockInfoResBody : Body() {
     var isHaveUnUploadData = false //是否有未上传数据 0--->有  1--->没有
     var lockTime: Date? = null  //时间
 
-
     override fun parseContent(content: ByteArray) {
         lockStatus = if (content[5] == (0x00 as Byte)) LockStatus.OPEN else LockStatus.CLOSE
         val a = content[6].toInt().toDouble()

@@ -2,7 +2,6 @@ package com.hh.bluetoothlock
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.widget.AdapterView
 import com.hh.bluetoothlock.presenter.MainPresenter
 import com.hh.bluetoothlock.ui.BaseActivity
