@@ -14,6 +14,7 @@ interface BluetoothListener {
     fun onSearchStopped()
     fun onSearchCanceled()
     fun onConnect(isSuccess: Boolean, device: SearchResult)
+    fun onConnect(isSuccess: Boolean, deviceMac: String)
     fun onNotify(instruction: Instruction)
     fun onError(msg: String)
 }

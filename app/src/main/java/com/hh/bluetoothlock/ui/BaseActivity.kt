@@ -18,8 +18,8 @@ open class BaseActivity : AppCompatActivity(), BaseView {
         alertDialog = MyAlertDialog(this)
     }
 
-    override fun alertError(title: String, message: String) {
-        alertDialog.alertErrorMsg(title, message)
+    override fun alertError(title: String, message: String, callback: MyAlertDialog.SureClickBasck?) {
+        alertDialog.alertErrorMsg(title, message, callback)
     }
 
     override fun showToast(content: String) {

@@ -30,6 +30,7 @@ class BluetoothClientManager {
 
     companion object {
         lateinit var bluetoothClient: BluetoothClient
+
         // must load first
         fun init(context: Context) {
             bluetoothClient = BluetoothClient(context)
@@ -45,7 +46,7 @@ class BluetoothClientManager {
      */
     private fun searchBluetooth() {
         val request = SearchRequest.Builder()
-                //.searchBluetoothLeDevice(3000, 3)   // 先扫BLE设备3次，每次3s TODO 此处暂时屏蔽BLE扫描 方便测试
+                .searchBluetoothLeDevice(3000, 3)   // 先扫BLE设备3次，每次3s
                 .searchBluetoothClassicDevice(5000) // 再扫经典蓝牙5s
                 .searchBluetoothLeDevice(2000)      // 再扫BLE设备2s
                 .build()
@@ -87,11 +88,49 @@ class BluetoothClientManager {
         }
     }
 
+    fun connectDevices(deviceMac: String) {
+        val options = BleConnectOptions.Builder()
+                .setConnectRetry(3)   // 连接如果失败重试3次
+                .setConnectTimeout(30000)   // 连接超时30s
+                .setServiceDiscoverRetry(3)  // 发现服务如果失败重试3次
+                .setServiceDiscoverTimeout(20000)  // 发现服务超时20s
+                .build()
+        bluetoothClient.connect(deviceMac, options) { code, profile ->
+            if (code == REQUEST_SUCCESS) {   //当连接成功时,我们需要进行一些数据通信
+                callback?.onConnect(true, deviceMac)
+            } else {
+                callback?.onError("连接设备 $deviceMac 失败")
+            }
+        }
+    }
+
     /**
      * 注册蓝牙通知
      */
     fun openBluetoothNotification(device: SearchResult) {
         bluetoothClient.notify(device.address, ServiceUUID, characterUUID_Notify, object : BleNotifyResponse {
+            override fun onNotify(service: UUID, character: UUID, value: ByteArray) {   //这里是接收蓝牙指令的回调
+                try {
+                    val instruction = InstructionParser().parseInstruction(value)
+                    callback?.onNotify(instruction)
+                } catch (e: ParserException) {
+                    callback?.onError(e.msg)
+                }
+            }
+
+            override fun onResponse(code: Int) {
+                if (code != REQUEST_SUCCESS) {  //注册成功
+                    callback?.onError("注册蓝牙通知失败")
+                }
+            }
+        })
+    }
+
+    /**
+     * 注册蓝牙通知
+     */
+    fun openBluetoothNotification(deviceMac: String) {
+        bluetoothClient.notify(deviceMac, ServiceUUID, characterUUID_Notify, object : BleNotifyResponse {
             override fun onNotify(service: UUID, character: UUID, value: ByteArray) {   //这里是接收蓝牙指令的回调
                 try {
                     val instruction = InstructionParser().parseInstruction(value)
@@ -150,15 +189,15 @@ class BluetoothClientManager {
     /**
      * 判断蓝牙是否打开--->搜索周围蓝牙设备--->连接蓝牙--->注册蓝牙通知
      */
-    fun start() {
+    fun start(needSearchBluetooth: Boolean) {
         if (bluetoothClient.isBluetoothOpened) {
-            searchBluetooth()
+            if (needSearchBluetooth) searchBluetooth()
         } else {
             bluetoothClient.openBluetooth()
             bluetoothClient.registerBluetoothStateListener(object : BluetoothStateListener() {
                 override fun onBluetoothStateChanged(openOrClosed: Boolean) {//true已经打开
                     if (openOrClosed) {
-                        searchBluetooth()
+                        if (needSearchBluetooth) searchBluetooth()
                         bluetoothClient.unregisterBluetoothStateListener(this)
                     }
                 }

@@ -11,5 +11,6 @@ object Constans {
 
     object Key {
         const val DEVICE_MAC_KEY = "device_mac"
+        const val TYPE_KEY = "type"
     }
 }

@@ -17,10 +17,12 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Device {
     @Id(autoincrement = false)
     private String device_id;  //即设备mac地址
+
     @Property(nameInDb = "DEVICE_NAME")
-    private String device_name;
+    private String device_name;//设备名称
+
     @Property(nameInDb = "LAST_CONNECT_TIME")
-    private Date lastConnectTime;
+    private Date lastConnectTime; //上次连接时间
 
     @Generated(hash = 1686680236)
     public Device(String device_id, String device_name, Date lastConnectTime) {

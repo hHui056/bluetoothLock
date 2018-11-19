@@ -21,6 +21,10 @@ public class MyAlertDialog {
         void onCanle();
     }
 
+    public interface SureClickBasck {
+        void onClick();
+    }
+
     public void showDialogLoading(String message) {
         alertDialog = null;
         alertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.PROGRESS_TYPE).setTitleText(TextUtils.isEmpty(message) ? "处理中..." : message)
@@ -98,11 +102,17 @@ public class MyAlertDialog {
      * @param title
      * @param msg
      */
-    public void alertErrorMsg(String title, String msg) {
+    public void alertErrorMsg(String title, String msg, final SureClickBasck callback) {
         if (alertDialog != null && alertDialog.isShowing()) {
             closeDialogLoading();
         }
-        alertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE).setTitleText(title).setContentText(msg);
+        alertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE).setTitleText(title).setContentText(msg).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                alertDialog.dismissWithAnimation();
+                if (callback != null) callback.onClick();
+            }
+        });
         alertDialog.show();
     }
 
